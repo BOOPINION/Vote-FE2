@@ -5,7 +5,8 @@ function App() {
   return (
     <h1 className="text-3xl font-bold underline">
       ts + tailwindcss 적용함
-      음음음asdasd
+      호언 test
+      
 
     </h1>
   )
