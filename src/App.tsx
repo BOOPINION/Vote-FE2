@@ -1,15 +1,17 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Routes import 추가
+import MainHome from './pages/mainHome'; // 메인 화면 컴포넌트 import
+import VoteResult from './pages/voteResult'; // 투표 결과 컴포넌트 import
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      ts + tailwindcss 적용함
-      음음음asdasd
-      아 내포크레포에서 풀리퀘s가 아닌것 같애ㅠㅠ
-sd
-    </h1>
-  )
+    <Router>
+      <Routes> {/* Routes로 감싸주기 */}
+        <Route path="/" element={<MainHome />} />
+        <Route path="/vote-result" element={<VoteResult />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
