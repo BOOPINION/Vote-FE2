@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Ro
 import MainHome from "./pages/mainHome";
 import VoteResult from "./pages/voteResult";
 import SignUp from "./pages/SignUp";
+import VoteMaker from "./pages/voteMaker";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<MainHome />} />
         <Route path="/vote-result" element={<VoteResult />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/vote-maker" element={<VoteMaker />} />
       </Routes>
     </Router>
   );
