@@ -20,7 +20,7 @@ function VoteResult() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    //투표로직
+    
     console.log(`Voted for: ${selectedOption}`);
     setTimeout(() => {
       setVotes((prevVotes) => ({

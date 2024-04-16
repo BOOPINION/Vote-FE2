@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Routes import 추가
-import MainHome from './pages/mainHome'; // 메인 화면 컴포넌트 import
-import VoteResult from './pages/voteResult'; // 투표 결과 컴포넌트 import
+import MainHome from './pages/mainHome'; 
+import VoteResult from './pages/voteResult'; 
 
 function App() {
   return (
     <Router>
-      <Routes> {/* Routes로 감싸주기 */}
+      <Routes> 
         <Route path="/" element={<MainHome />} />
         <Route path="/vote-result" element={<VoteResult />} />
       </Routes>
@@ -15,5 +15,4 @@ function App() {
 }
 
 
-//제발 
 export default App;
