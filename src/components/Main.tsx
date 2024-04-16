@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Main: React.FC = () => {
   return (
@@ -12,9 +13,11 @@ const Main: React.FC = () => {
           로그인하고 더 많은 설문을 선택하세요
         </div>
       </div>
-      <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-black mb-24">
-        로그인하고 설문 작성하러 가기
-      </button>
+      <Link to="/signup">
+        <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-black mb-24">
+          로그인하고 설문 작성하러 가기
+        </button>
+      </Link>
     </div>
   );
 };
