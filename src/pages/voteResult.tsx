@@ -1,6 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 
+//TODO : 좋아요, 댓글 UI구현 
+
 interface VoteOption {
   count: number;
   label: string;

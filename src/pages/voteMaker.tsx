@@ -1,42 +1,49 @@
 import React, { useState } from 'react';
 
-type TodoItem = {
+//TODO : 컴포넌트 분리
+
+type voteItem = {
   id: number;
   text: string;
 };
 
 const App: React.FC = () => {
-  const [todoItems, setTodoItems] = useState<TodoItem[]>([
+  const [voteItems, setvoteItems] = useState<voteItem[]>([
     { id: Date.now(), text: '' },
     { id: Date.now() + 1, text: '' },
   ]);
   const [selectedTopic, setSelectedTopic] = useState<string>('');
   const topics = ['20대', '30대', '연애', 'MBTI'];
 
-  const handleAddTodo = () => {
-    if (todoItems.length < 5) {
-      const newItem: TodoItem = {
+ //⚡투표항목 추가 함수
+  const handleAddvote = () => {
+    if (voteItems.length < 5) {
+      const newItem: voteItem = {
         id: Date.now(),
         text: '',
       };
-      setTodoItems([...todoItems, newItem]);
+      setvoteItems([...voteItems, newItem]);
     }
   };
 
-  const handleTodoChange = (id: number, text: string) => {
-    setTodoItems(
-      todoItems.map(item => (item.id === id ? { ...item, text } : item))
+  //⚡투표 텍스트 변경 함수
+  const handlevoteChange = (id: number, text: string) => {
+    setvoteItems(
+      voteItems.map(item => (item.id === id ? { ...item, text } : item))
     );
   };
 
-  const handleRemoveTodo = (id: number) => {
-    setTodoItems(todoItems.filter(item => item.id !== id));
+  //⚡투표 항목 제거 함수
+  const handleRemovevote = (id: number) => {
+    setvoteItems(voteItems.filter(item => item.id !== id));
   };
 
+  //⚡ 주제 선택할때 
   const handleTopicChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTopic(event.target.value);
   };
 
+  //⚡종료예정일 계산 = 현재날짜 + 3
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 3);
   const formattedEndDate = endDate.toLocaleDateString('ko-KR', {
@@ -82,7 +89,7 @@ const App: React.FC = () => {
         <div className="w-full max-w-md bg-white shadow-md">
           <div className="p-4 ">
             <h2 className="text-lg font-semibold text-center">투표</h2>
-            {todoItems.map((item, index) => (
+            {voteItems.map((item, index) => (
               <div
                 key={item.id}
                 className="flex items-center border border-gray-300 rounded-lg p-3 my-4"
@@ -90,12 +97,12 @@ const App: React.FC = () => {
                 <input
                   type="text"
                   value={item.text}
-                  onChange={e => handleTodoChange(item.id, e.target.value)}
+                  onChange={e => handlevoteChange(item.id, e.target.value)}
                   className="flex-grow p-2 rounded-l-lg border-0 focus:outline-none"
                   placeholder={`투표 항목 #${index + 1}`}
                 />
                 <button
-                  onClick={() => handleRemoveTodo(item.id)}
+                  onClick={() => handleRemovevote(item.id)}
                   className="text-red-500 bg-transparent hover:bg-red-100 p-2 rounded-full"
                   aria-label="Remove item"
                 >
@@ -104,9 +111,9 @@ const App: React.FC = () => {
               </div>
             ))}
             <button
-              onClick={handleAddTodo}
+              onClick={handleAddvote}
               className="w-full bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
-              disabled={todoItems.length >= 5}
+              disabled={voteItems.length >= 5}
             >
               + 항목 추가
             </button>
