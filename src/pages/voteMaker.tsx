@@ -14,11 +14,13 @@ const App: React.FC = () => {
   const topics = ['20대', '30대', '연애', 'MBTI'];
 
   const handleAddTodo = () => {
-    const newItem: TodoItem = {
-      id: Date.now(),
-      text: '',
-    };
-    setTodoItems([...todoItems, newItem]);
+    if (todoItems.length < 5) {
+      const newItem: TodoItem = {
+        id: Date.now(),
+        text: '',
+      };
+      setTodoItems([...todoItems, newItem]);
+    }
   };
 
   const handleTodoChange = (id: number, text: string) => {
@@ -37,13 +39,12 @@ const App: React.FC = () => {
 
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 3);
-  const formattedEndDate = endDate.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
+  const formattedEndDate = endDate.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
   });
-
 
   return (
     <div className="flex flex-col items-center justify-center p-4 pl-8 pr-8 bg-white rounded-lg shadow">
@@ -59,7 +60,7 @@ const App: React.FC = () => {
           className="w-full rounded-lg border-2 p-2 mb-4"
         >
           <option value="">주제를 선택해주세요</option>
-          {topics.map((topic) => (
+          {topics.map(topic => (
             <option key={topic} value={topic}>
               {topic}
             </option>
@@ -89,7 +90,7 @@ const App: React.FC = () => {
                 <input
                   type="text"
                   value={item.text}
-                  onChange={(e) => handleTodoChange(item.id, e.target.value)}
+                  onChange={e => handleTodoChange(item.id, e.target.value)}
                   className="flex-grow p-2 rounded-l-lg border-0 focus:outline-none"
                   placeholder={`투표 항목 #${index + 1}`}
                 />
@@ -105,6 +106,7 @@ const App: React.FC = () => {
             <button
               onClick={handleAddTodo}
               className="w-full bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
+              disabled={todoItems.length >= 5}
             >
               + 항목 추가
             </button>
