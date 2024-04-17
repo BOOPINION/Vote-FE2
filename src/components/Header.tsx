@@ -8,7 +8,7 @@ const Header: React.FC = () => {
         <Link to="/" className="bg-gray-500 rounded-full px-2 py-1">
           <div className="text-white">홈</div>
         </Link>
-        <Link to="/vote-result" className="bg-gray-500 rounded-full px-2 py-1">
+        <Link to="/voteHome" className="bg-gray-500 rounded-full px-2 py-1">
           <div className="text-white">투표</div>
         </Link>
       </div>
