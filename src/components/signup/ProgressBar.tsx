@@ -1,13 +1,16 @@
 import React from "react";
 
-const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => {
+const ProgressBar: React.FC<{ current: number; total: number }> = ({
+  current,
+  total,
+}) => {
   return (
     <div className="w-full bg-gray-200 rounded-full">
       <div
-        className="bg-pink-500 text-xs leading-none py-1 text-center text-white rounded-full"
-        style={{ width: `${progress}%` }}
+        className="bg-blue-700 text-xs leading-none py-1 text-center text-white rounded-full"
+        style={{ width: `${(current / total) * 100}%` }}
       >
-        {progress}%
+        {current}/{total}
       </div>
     </div>
   );
