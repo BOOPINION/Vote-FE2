@@ -32,7 +32,7 @@ const Question: React.FC<{
   return (
     <div className="flex flex-col items-start w-auto mx-auto my-8 p-8">
       {/* 진행률 표시 */}
-      <ProgressBar progress={(questionNumber - 1) * (100 / questions.length)} />
+      <ProgressBar current={questionNumber} total={questions.length} />
       <span className="mt-8 text-lg text-blue-500 font-semibold">
         질문 {questionNumber}
       </span>
@@ -43,7 +43,7 @@ const Question: React.FC<{
       {questions[questionNumber - 1].options.map((option, index) => (
         <button
           key={index}
-          className="mt-8 w-full items-center bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mr-4"
+          className="mt-8 w-full items-center bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full mr-4"
           onClick={() => handleOptionSelect(option)}
         >
           {option}
