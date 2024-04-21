@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import Header from "../components/Header";
-import { Link } from 'react-router-dom';
-import { AiOutlineUser, AiOutlineHeart } from 'react-icons/ai';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Header from "../components/home/Header";
+import { Link } from "react-router-dom";
+import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
 import { FaRandom } from "react-icons/fa";
 
-//TODO: motion 추가,인기투표,  api준비 코드로 바꾸기 , api명세서 
+//TODO: motion 추가,인기투표,  api준비 코드로 바꾸기 , api명세서
 
 interface VoteItem {
-    id: number;
-    title: string;
-    description: string;
-    totalVotes: number;
-    userParticipated: boolean; // 사용자가 투표에 참여했는지 여부
-    options: string[]; // 투표 선택지
-    participants: number; // 투표에 참여한 인원 수
-    likes: number; // 좋아요 수
+  id: number;
+  title: string;
+  description: string;
+  totalVotes: number;
+  userParticipated: boolean; // 사용자가 투표에 참여했는지 여부
+  options: string[]; // 투표 선택지
+  participants: number; // 투표에 참여한 인원 수
+  likes: number; // 좋아요 수
 }
 
 const votes: VoteItem[] = [
@@ -72,8 +72,6 @@ const votes: VoteItem[] = [
   // 추가적인 투표 아이템들...
 ];
 
-
-
 // 투표를 좋아요 수에 따라 내림차순으로 정렬하는 함수
 const sortByLikesDescending = (a: VoteItem, b: VoteItem) => {
   return b.likes - a.likes;
@@ -91,60 +89,76 @@ const App = () => {
     setRandomVotes(shuffled);
   };
 
-  
   return (
     <div className="p-4">
-        <Header />
-        <div className="mt-4 mb-8 flex justify-between items-center">
-            <input type="text" placeholder="무엇이 고민인가요?" className="border border-gray-300 px-4 py-2 rounded-md mr-4" />
-            <button onClick={shuffleVotes} className="bg-gray-700 text-white px-4 py-2 rounded-md"><FaRandom /></button>
-        </div>
-        <div className="overflow-auto max-h-[calc(100vh-160px)]">
-            <motion.ul
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="pt-4"
-            >
-                {sortedVotes.map(({ id, title, userParticipated, options, participants, likes }, index) => (
-                    <Link to={`/vote-result`} key={id}>
-                        <motion.li
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className={`p-4 m-2 shadow rounded-lg mb-4 ${userParticipated ? 'bg-green-100' : 'bg-white'} ${index === 0 ? 'border-2 border-pink-500' : ''}`}
-                        >
-                            <h3 className="text-lg font-bold">{title}</h3>
-                            <div className="mt-2">
-                                {options.map((option, optionIndex) => (
-                                    <motion.div
-                                        key={optionIndex}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.1 * optionIndex }}
-                                        className="flex items-center justify-between p-2 bg-gray-100 rounded-lg my-1"
-                                    >
-                                        <span>{option}</span>
-                                    </motion.div>
-                                ))}
-                            </div>
-                            <div className="flex justify-between mt-4">
-                                <div className="text-sm text-gray-600 flex items-center">
-                                    <AiOutlineHeart className="mr-1" /> {likes}
-                                </div>
-                                <button className="text-sm bg-black text-white border px-16 py-2 rounded-xl">투표 참여하기</button>
-                                <div className="text-sm text-gray-600 flex items-center">
-                                    <AiOutlineUser className="mr-1" /> {participants}
-                                </div>
-                                
-                            </div>
-                        </motion.li>
-                    </Link>
-                ))}
-            </motion.ul>
-        </div>
+      <Header />
+      <div className="mt-4 mb-8 flex justify-between items-center">
+        <input
+          type="text"
+          placeholder="무엇이 고민인가요?"
+          className="border border-gray-300 px-4 py-2 rounded-md mr-4"
+        />
+        <button
+          onClick={shuffleVotes}
+          className="bg-gray-700 text-white px-4 py-2 rounded-md"
+        >
+          <FaRandom />
+        </button>
+      </div>
+      <div className="overflow-auto max-h-[calc(100vh-160px)]">
+        <motion.ul
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="pt-4"
+        >
+          {sortedVotes.map(
+            (
+              { id, title, userParticipated, options, participants, likes },
+              index
+            ) => (
+              <Link to={`/vote-result`} key={id}>
+                <motion.li
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className={`p-4 m-2 shadow rounded-lg mb-4 ${
+                    userParticipated ? "bg-green-100" : "bg-white"
+                  } ${index === 0 ? "border-2 border-pink-500" : ""}`}
+                >
+                  <h3 className="text-lg font-bold">{title}</h3>
+                  <div className="mt-2">
+                    {options.map((option, optionIndex) => (
+                      <motion.div
+                        key={optionIndex}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 * optionIndex }}
+                        className="flex items-center justify-between p-2 bg-gray-100 rounded-lg my-1"
+                      >
+                        <span>{option}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between mt-4">
+                    <div className="text-sm text-gray-600 flex items-center">
+                      <AiOutlineHeart className="mr-1" /> {likes}
+                    </div>
+                    <button className="text-sm bg-black text-white border px-16 py-2 rounded-xl">
+                      투표 참여하기
+                    </button>
+                    <div className="text-sm text-gray-600 flex items-center">
+                      <AiOutlineUser className="mr-1" /> {participants}
+                    </div>
+                  </div>
+                </motion.li>
+              </Link>
+            )
+          )}
+        </motion.ul>
+      </div>
     </div>
-);
+  );
 };
 
 export default App;
