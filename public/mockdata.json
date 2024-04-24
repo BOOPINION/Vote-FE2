@@ -1,0 +1,17 @@
+{
+  "pollTitle": " mockdata 어떤 직장이 좋을까?",
+  "pollDescription": "선택해 주세요.",
+  "username": "홍길동",
+  "viewCount": 5,
+  "options": {
+    "Option1": {
+      "count": 5,
+      "label": "좋아하는 일 하는데 끔찍한 상사"
+    },
+    "Option2": {
+      "count": 5,
+      "label": "일은 싫은데 좋은 상사"
+    }
+  }
+
+}

@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 
 interface VoteOption {
@@ -6,17 +6,50 @@ interface VoteOption {
     label: string;
 }
 
-//TODO :  좋아요 댓글 UI 추가해야함 
+interface PollResult {
+    date: string;
+    details: { [key: string]: VoteOption };
+}
+
+interface PollData {
+    pollTitle: string;
+    pollDescription: string;
+    username: string;
+    viewCount: number;
+    results: PollResult[];
+}
+
 function VoteResult() {
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [votes, setVotes] = useState<{ [key: string]: VoteOption }>({
-        Option1: { count: 5, label: '좋아하는 일 하는데 끔찍한 상사' },
-        Option2: { count: 5, label: '일은 싫은데 좋은 상사' }
-    });
+    const [votes, setVotes] = useState<{ [key: string]: VoteOption }>({});
     const [voteSubmitted, setVoteSubmitted] = useState<boolean>(false);
+    const [pollData, setPollData] = useState<PollData>({
+        pollTitle: '',
+        pollDescription: '',
+        username: '',
+        viewCount: 0,
+        results: []
+    });
 
-    const totalVotes: number = votes.Option1.count + votes.Option2.count;
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch('/mockdata.json');
+            const data = await response.json();
+            setVotes(data.options);
+            setPollData({
+                pollTitle: data.pollTitle,
+                pollDescription: data.pollDescription,
+                username: data.username,
+                viewCount: data.viewCount,
+                results: data.results
+            });
+        }
+
+        fetchData();
+    }, []);
+
+    const totalVotes: number = Object.values(votes).reduce((acc, option) => acc + option.count, 0);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -37,19 +70,20 @@ function VoteResult() {
         }, 1000);
     };
 
-
     return (
         <div className="max-w-sm mx-auto p-4">
-            <div className="header mt-4 mb-8">뒤로가기</div>
+            <div className="header mt-4 mb-8">
+                <button className="text-blue-500">뒤로가기</button>
+            </div>
             <div className="flex items-center mb-4">
                 <div className="w-10 h-10 rounded-full bg-gray-200 mr-4"></div>
                 <div className="text-sm">
-                    <p className="text-gray-900 leading-none">사용자이름</p>
-                    <p className="text-gray-600">5명 조회</p>
+                    <p className="text-gray-900 leading-none">{pollData.username}</p>
+                    <p className="text-gray-600">{pollData.viewCount}명 조회</p>
                 </div>
             </div>
-            <div className="voteText text-lg mb-4">Q. 어떤 직장이 좋을까?</div>
-
+            <div className="voteText text-lg mb-4">{pollData.pollTitle}</div>
+    
             {voteSubmitted ? (
                 <div className="bg-white border border-gray-200 rounded-xl p-6 mb-4">
                     {Object.entries(votes).map(([key, { count, label }]) => (
@@ -60,15 +94,13 @@ function VoteResult() {
                                     {count}표 / {((count / totalVotes) * 100).toFixed(0)}%
                                 </div>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden my-2">
-                                <motion.div
-                                    className="bg-pink-400 h-6 rounded-full"
-                                    style={{ width: `${(count / totalVotes) * 100}%` }}
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${(count / totalVotes) * 100}%` }}
-                                    transition={{ duration: 0.5, ease: "easeOut" }}
-                                />
-                            </div>
+                            <motion.div
+                                className="w-full bg-pink-500 rounded-full h-6 overflow-hidden my-2"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(count / totalVotes) * 100}%` }}
+                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                style={{ width: `${(count / totalVotes) * 100}%` }}
+                            />
                         </div>
                     ))}
                     <button
@@ -84,49 +116,29 @@ function VoteResult() {
                         투표
                     </div>
                     <form onSubmit={handleSubmit}>
-                        <div
-                            className={`mb-4 p-2 rounded-full border-2 ${
-                                selectedOption === "Option1"
-                                    ? "bg-pink-100 border-pink-500"
-                                    : "border-gray-300"
-                            }`}
-                        >
-                            <label className="flex items-center cursor-pointer">
-                                <input
-                                    type="radio"
-                                    className="form-radio text-pink-500 h-5 w-5"
-                                    name="vote"
-                                    value="Option1"
-                                    checked={selectedOption === "Option1"}
-                                    onChange={(e) => setSelectedOption(e.target.value)}
-                                />
-                                <span className="ml-2 text-gray-700">좋아하는 일 하는데 끔찍한 상사</span>
-                            </label>
-                        </div>
-                        <div
-                            className={`mb-6 p-2 rounded-full border-2 ${
-                                selectedOption === "Option2"
-                                    ? "bg-pink-100 border-pink-500"
-                                    : "border-gray-300"
-                            }`}
-                        >
-                            <label className="flex items-center cursor-pointer">
-                                <input
-                                    type="radio"
-                                    className="form-radio text-pink-500 h-5 w-5"
-                                    name="vote"
-                                    value="Option2"
-                                    checked={selectedOption === "Option2"}
-                                    onChange={(e) => setSelectedOption(e.target.value)}
-                                />
-                                <span className="ml-2 text-gray-700">일은 싫은데 좋은 상사</span>
-                            </label>
-                        </div>
+                        {Object.entries(votes).map(([key, { label }]) => (
+                            <div
+                                key={key}
+                                className={`mb-4 p-2 rounded-full border-2 ${
+                                    selectedOption === key ? "bg-pink-100 border-pink-500" : "border-gray-300"
+                                }`}
+                            >
+                                <label className="flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        className="form-radio text-pink-500 h-5 w-5"
+                                        name="vote"
+                                        value={key}
+                                        checked={selectedOption === key}
+                                        onChange={(e) => setSelectedOption(e.target.value)}
+                                    />
+                                    <span className="ml-2 text-gray-700">{label}</span>
+                                </label>
+                            </div>
+                        ))}
                         <button
                             className={`w-full py-2 rounded-full font-bold flex justify-center items-center focus:outline-none focus:shadow-outline transition-colors ${
-                                isLoading
-                                    ? "bg-gray-300 cursor-not-allowed text-gray-700"
-                                    : "bg-pink-500 hover:bg-pink-600 text-white"
+                                isLoading ? "bg-gray-300 cursor-not-allowed text-gray-700" : "bg-pink-500 hover:bg-pink-600 text-white"
                             }`}
                             type="submit"
                             disabled={isLoading}
@@ -162,8 +174,10 @@ function VoteResult() {
                     </form>
                 </div>
             )}
+    
         </div>
     );
+    
 }
 
 export default VoteResult;
