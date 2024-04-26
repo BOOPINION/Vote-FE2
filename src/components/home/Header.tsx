@@ -17,9 +17,9 @@ const Header: React.FC = () => {
         </Link>
       </div>
       <div className="flex flex-1 flex-grow justify-end">
-        <button>
+        <Link to="login">
           <CgProfile className="w-8 h-8" />
-        </button>
+        </Link>
       </div>
     </div>
   );

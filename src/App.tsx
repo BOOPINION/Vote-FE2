@@ -5,7 +5,7 @@ import VoteResult from "./pages/voteResult";
 import SignUp from "./pages/SignUp";
 import VoteMaker from "./pages/voteMaker";
 import VoteHome from "./pages/voteHome";
-
+import Login from "./pages/Login";
 function App() {
   return (
     <Router>
@@ -15,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/vote-maker" element={<VoteMaker />} />
         <Route path="/voteHome" element={<VoteHome />} />
+        <Route path="login" element={<Login />} />
       </Routes>
     </Router>
   );
