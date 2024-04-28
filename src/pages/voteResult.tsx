@@ -2,7 +2,9 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
-import { BsSendFill } from "react-icons/bs";
+import { BsSendFill } from 'react-icons/bs';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
 interface VoteOption {
   count: number;
   label: string;
@@ -25,7 +27,7 @@ interface Comment {
   id: number;
   username: string;
   content: string;
-  createdAt: Date; 
+  createdAt: Date;
 }
 
 function VoteResult() {
@@ -45,6 +47,12 @@ function VoteResult() {
   const [commentUsername, setCommentUsername] = useState<string>('');
   const [comments, setComments] = useState<Comment[]>([]);
 
+  // 좋아요 상태 추가
+  const [liked, setLiked] = useState<boolean>(false);
+
+  // 좋아요 수 상태 추가
+  const [likeCount, setLikeCount] = useState<number>(0);
+
   useEffect(() => {
     async function fetchData() {
       const response = await fetch('/mockdata.json');
@@ -58,7 +66,12 @@ function VoteResult() {
         results: data.results,
       });
       setCommentUsername(data.username);
-      setComments(data.comments); 
+      setComments(data.comments);
+
+      // 기존 좋아요 수 설정
+      if (data.likeCount !== undefined) {
+        setLikeCount(data.likeCount);
+      }
     }
 
     fetchData();
@@ -94,12 +107,22 @@ function VoteResult() {
       id: comments.length + 1,
       username: pollData.username,
       content: commentInput,
-      createdAt: new Date(), 
+      createdAt: new Date(),
     };
     setComments([...comments, newComment]);
     setCommentInput('');
   };
-  
+
+  // 좋아요 토글 함수 수정
+  function toggleLike() {
+    if (liked) {
+      setLikeCount((prevCount) => prevCount - 1);
+    } else {
+      setLikeCount((prevCount) => prevCount + 1);
+    }
+    setLiked((prevLiked) => !prevLiked);
+  }
+
   return (
     <div className="max-w-md mx-auto p-4">
       <div className="header pt-4 pb-4">
@@ -210,43 +233,58 @@ function VoteResult() {
           </form>
         </div>
       )}
+      {/* 좋아요 하트 아이콘 */}
+      <div className="flex items-center mb-4">
+          <button
+            className={`flex items-center ${
+              liked ? 'text-red-500' : 'text-gray-400'
+            }`}
+            onClick={toggleLike}
+          >
+            {liked ? (
+              <FaHeart size={24} className="mr-2" />
+            ) : (
+              <FaRegHeart size={24} className="mr-2" />
+            )}
+            <span>{likeCount}</span>
+          </button>
+        </div>
 
-<form
-  onSubmit={handleCommentSubmit}
-  className="bottom-0 items-center max-w-md mx-auto px-4 pt-2 pb-2 bg-white border rounded-lg flex"
->
-  <input
-    type="text"
-    className="w-1/4 p-1 rounded-lg mr-2"
-    placeholder="닉네임을 입력하세요"
-    value={pollData.username}
-    readOnly
-  />
-  <textarea
-    className="w-full p-1 border border-gray-300 rounded-lg mr-2 h-10"
-    placeholder="댓글을 입력하세요..."
-    value={commentInput}
-    onChange={(e) => setCommentInput(e.target.value)}
-  ></textarea>
-  <button className="py-2 pl-1 pr-1  rounded-lg" type="submit">
-    <BsSendFill />
-  </button>
-</form>
+      <div className="comment-section">
+        <form
+          onSubmit={handleCommentSubmit}
+          className="bottom-0 items-center max-w-md mx-auto px-4 pt-2 pb-2 bg-white border rounded-lg flex"
+        >
+          <input
+            type="text"
+            className="w-1/4 p-1 rounded-lg mr-2"
+            placeholder="닉네임을 입력하세요"
+            value={pollData.username}
+            readOnly
+          />
+          <textarea
+            className="w-full p-1 border border-gray-300 rounded-lg mr-2 h-10"
+            placeholder="댓글을 입력하세요..."
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+          ></textarea>
+          <button className="py-2 pl-1 pr-1 rounded-lg" type="submit">
+            <BsSendFill />
+          </button>
+        </form>
 
-
-
-      <div className="mt-4">
-        {comments.map((comment) => (
-          <div key={comment.id} className=" p-3 pb-1 rounded-lg">
-            <p className="text-gray-600 ">
-              {comment.username} -{" "}
-              {new Date(comment.createdAt).toLocaleString()}
-            </p>
-            <p>{comment.content}</p>
-            
-            <hr className="my-2 border-t-2 border-gray-300" />
-          </div>
-        ))}
+        <div className="mt-4">
+          {comments.map((comment) => (
+            <div key={comment.id} className="p-3 pb-1 rounded-lg">
+              <p className="text-gray-600">
+                {comment.username} -{" "}
+                {new Date(comment.createdAt).toLocaleString()}
+              </p>
+              <p>{comment.content}</p>
+              <hr className="my-2 border-t-2 border-gray-300" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
