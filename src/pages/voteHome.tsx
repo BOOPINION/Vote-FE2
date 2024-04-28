@@ -12,7 +12,7 @@ interface VoteItem {
   title: string;
   description: string;
   totalVotes: number;
-  userParticipated: boolean; // 사용자가 투표에 참여했는지 여부
+  // userParticipated: boolean; // 사용자가 투표에 참여했는지 여부
   options: string[]; // 투표 선택지
   participants: number; // 투표에 참여한 인원 수
   likes: number; // 좋아요 수
@@ -24,7 +24,6 @@ const votes: VoteItem[] = [
     title: "수명을 선택",
     description: "어느 것이 더 좋습니까?",
     totalVotes: 100,
-    userParticipated: true,
     options: ["20년 엄청 부자로 살다죽기", "70년 복불복으로 살기"],
     participants: 50,
     likes: 60,
@@ -34,7 +33,6 @@ const votes: VoteItem[] = [
     title: "어떤 직장이 좋을까",
     description: "~~",
     totalVotes: 100,
-    userParticipated: false,
     options: ["좋아하는 일 하는데 끔찍한 상사", "일은 싫은데 좋은 상사"],
     participants: 34,
     likes: 60,
@@ -44,7 +42,6 @@ const votes: VoteItem[] = [
     title: "더 화나는 일은???",
     description: ".",
     totalVotes: 100,
-    userParticipated: false,
     options: ["에어팟 한쪽만 잃어버림", "휴대폰 액정 파손"],
     participants: 34,
     likes: 75,
@@ -54,7 +51,6 @@ const votes: VoteItem[] = [
     title: "민초반민초 ",
     description: ".",
     totalVotes: 100,
-    userParticipated: false,
     options: ["민초", "반민초", "둘다 ㄴ"],
     participants: 34,
     likes: 60,
@@ -64,7 +60,6 @@ const votes: VoteItem[] = [
     title: "당신의 선택은?",
     description: ".",
     totalVotes: 100,
-    userParticipated: false,
     options: ["연인과의 100일 기념일", "오랜친구의 생일"],
     participants: 34,
     likes: 65,
@@ -92,11 +87,11 @@ const App = () => {
   return (
     <div className="p-4">
       <Header />
-      <div className="mt-4 mb-8 flex justify-between items-center">
+      <div className="mt-8 flex justify-between items-center pl-2 pr-2">
         <input
           type="text"
           placeholder="무엇이 고민인가요?"
-          className="border border-gray-300 px-4 py-2 rounded-md mr-4"
+          className="border border-gray-300 px-16 py-1 rounded-md mr-4"
         />
         <button
           onClick={shuffleVotes}
@@ -114,7 +109,7 @@ const App = () => {
         >
           {sortedVotes.map(
             (
-              { id, title, userParticipated, options, participants, likes },
+              { id, title, options, participants, likes },
               index
             ) => (
               <Link to={`/vote-result`} key={id}>
@@ -122,9 +117,7 @@ const App = () => {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`p-4 m-2 shadow rounded-lg mb-4 ${
-                    userParticipated ? "bg-green-100" : "bg-white"
-                  } ${index === 0 ? "border-2 border-pink-500" : ""}`}
+                  className={`p-4 m-2 shadow rounded-lg mb-4  ${index === 0 ? "border-2 border-blue-500" : ""}`}
                 >
                   <h3 className="text-lg font-bold">{title}</h3>
                   <div className="mt-2">

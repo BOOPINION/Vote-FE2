@@ -3,6 +3,7 @@
   "pollDescription": "선택해 주세요.",
   "username": "Boo123",
   "viewCount": 5,
+  "likeCount": 10, 
   "options": {
     "Option1": {
       "count": 5,
