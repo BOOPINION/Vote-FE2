@@ -137,7 +137,7 @@ const App = () => {
                     <div className="text-sm text-gray-600 flex items-center">
                       <AiOutlineHeart className="mr-1" /> {likes}
                     </div>
-                    <button className="text-sm bg-black text-white border px-16 py-2 rounded-xl">
+                    <button className="text-sm bg-gray-800 text-white border px-16 py-2 rounded-xl">
                       투표 참여하기
                     </button>
                     <div className="text-sm text-gray-600 flex items-center">
