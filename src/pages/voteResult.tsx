@@ -79,6 +79,7 @@ function VoteResult() {
     0
   );
 
+  //투표 제출 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -98,6 +99,7 @@ function VoteResult() {
     }, 1000);
   };
 
+  //투표 댓글
   const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newComment: Comment = {
@@ -110,6 +112,7 @@ function VoteResult() {
     setCommentInput('');
   };
 
+  //좋아요
   function toggleLike() {
     if (liked) {
       setLikeCount((prevCount) => prevCount - 1);
@@ -153,7 +156,7 @@ function VoteResult() {
                 className="w-full bg-blue-500 rounded-full h-6 overflow-hidden my-2"
                 initial={{ width: 0 }}
                 animate={{ width: `${(count / totalVotes) * 100}%` }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 style={{ width: `${(count / totalVotes) * 100}%` }}
               />
             </div>
@@ -178,13 +181,12 @@ function VoteResult() {
       <LikeButton liked={liked} toggleLike={toggleLike} likeCount={likeCount} />
 
       <CommentSection
-  comments={comments}
-  commentInput={commentInput}
-  setCommentInput={setCommentInput}
-  handleCommentSubmit={handleCommentSubmit}
-  handleCommentDelete={handleCommentDelete} // handleCommentDelete 프로퍼티 추가
-/>
-
+        comments={comments}
+        commentInput={commentInput}
+        setCommentInput={setCommentInput}
+        handleCommentSubmit={handleCommentSubmit}
+        handleCommentDelete={handleCommentDelete} 
+      />
     </div>
   );
 }

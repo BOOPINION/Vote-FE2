@@ -4,6 +4,7 @@ import Header from "../components/home/Header";
 import { Link } from "react-router-dom";
 import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
 import { FaRandom } from "react-icons/fa";
+import { FaVoteYea } from 'react-icons/fa';
 
 //TODO: motion 추가,인기투표,  api준비 코드로 바꾸기 , api명세서
 
@@ -93,6 +94,11 @@ const App = () => {
           placeholder="무엇이 고민인가요?"
           className="border border-gray-300 px-16 py-1 rounded-md mr-4"
         />
+        <Link to="/vote-maker">
+        <button className="bg-gray-700 text-white px-4 py-2 rounded-md">
+          <FaVoteYea />
+        </button>
+      </Link>
         <button
           onClick={shuffleVotes}
           className="bg-gray-700 text-white px-4 py-2 rounded-md"
