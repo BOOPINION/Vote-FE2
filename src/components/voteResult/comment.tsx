@@ -36,7 +36,7 @@ function CommentSection({ comments, commentInput, setCommentInput, handleComment
 
       <div className="mt-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="p-3 pb-1 rounded-lg flex justify-between items-center">
+          <div key={comment.id} className="p-4 pb-1 border-b  flex justify-between items-center">
             <div>
               <p className="text-gray-600">
                 {comment.username} - {new Date(comment.createdAt).toLocaleString()}
