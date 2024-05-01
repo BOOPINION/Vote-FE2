@@ -7,7 +7,7 @@ const ProgressBar: React.FC<{ current: number; total: number }> = ({
   return (
     <div className="w-full bg-gray-200 rounded-full">
       <div
-        className="bg-blue-700 text-xs leading-none py-1 text-center text-white rounded-full"
+        className="bg-blue-700 text-xs leading-none py-1 text-center text-white rounded-full duration-300"
         style={{ width: `${(current / total) * 100}%` }}
       >
         {current}/{total}
