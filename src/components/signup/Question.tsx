@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
-
+import { IoIosArrowBack } from "react-icons/io";
+import { Link } from "react-router-dom";
 const Question: React.FC<{
   questionNumber: number;
   setQuestionNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -72,65 +73,78 @@ const Question: React.FC<{
   };
 
   return (
-    <div className="flex flex-col items-start w-auto mx-auto my-8 p-8">
-      <ProgressBar current={questionNumber} total={questions.length} />
-      <span className="mt-8 text-lg text-blue-500 font-semibold">
-        질문 {questionNumber}
-      </span>
-      <h2 className="text-2xl font-bold mt-2 mb-80">
-        {questions[questionNumber - 1].question}
-      </h2>
+    <>
       {questionNumber === 1 ? (
-        <>
-          <input
-            type="email"
-            className="w-full px-3 py-2 border rounded-md"
-            placeholder="example@example.com"
-            value={email}
-            onChange={handleEmailChange}
-          />
-          <button
-            className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            onClick={handleNextButtonClick}
-          >
-            다음
-          </button>
-        </>
-      ) : questionNumber === 2 ? (
-        <>
-          <input
-            type="password"
-            className="w-full px-3 py-2 border rounded-md mb-4"
-            placeholder="비밀번호"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <input
-            type="password"
-            className="w-full px-3 py-2 border rounded-md mb-4"
-            placeholder="비밀번호 확인"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
-          <button
-            className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            onClick={handleNextButtonClick}
-          >
-            다음
-          </button>
-        </>
+        <Link to="/">
+          <IoIosArrowBack size="26px" className="mt-8 mb-0 mx-4" />
+        </Link>
       ) : (
-        questions[questionNumber - 1].options.map((option, index) => (
-          <button
-            key={index}
-            className="mt-8 w-full items-center bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full mr-4"
-            onClick={() => handleOptionSelect(option)}
-          >
-            {option}
-          </button>
-        ))
+        <IoIosArrowBack
+          size="26px"
+          className="mt-8 mb-0 mx-4"
+          onClick={() => setQuestionNumber(questionNumber - 1)}
+        />
       )}
-    </div>
+      <div className="flex flex-col items-start w-auto mx-auto my-8 p-8">
+        <ProgressBar current={questionNumber} total={questions.length} />
+        <span className="mt-8 text-lg text-blue-500 font-semibold">
+          질문 {questionNumber}
+        </span>
+        <h2 className="text-2xl font-bold mt-2 mb-80">
+          {questions[questionNumber - 1].question}
+        </h2>
+        {questionNumber === 1 ? (
+          <>
+            <input
+              type="email"
+              className="w-full px-3 py-2 border rounded-md"
+              placeholder="example@example.com"
+              value={email}
+              onChange={handleEmailChange}
+            />
+            <button
+              className="mt-4 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+              onClick={handleNextButtonClick}
+            >
+              다음
+            </button>
+          </>
+        ) : questionNumber === 2 ? (
+          <>
+            <input
+              type="password"
+              className="w-full px-3 py-2 border rounded-md mb-4"
+              placeholder="비밀번호"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <input
+              type="password"
+              className="w-full px-3 py-2 border rounded-md mb-4"
+              placeholder="비밀번호 확인"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+            />
+            <button
+              className="mt-4 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+              onClick={handleNextButtonClick}
+            >
+              다음
+            </button>
+          </>
+        ) : (
+          questions[questionNumber - 1].options.map((option, index) => (
+            <button
+              key={index}
+              className="mt-8 w-full items-center bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full mr-4"
+              onClick={() => handleOptionSelect(option)}
+            >
+              {option}
+            </button>
+          ))
+        )}
+      </div>
+    </>
   );
 };
 
