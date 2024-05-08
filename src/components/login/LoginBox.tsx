@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { IoIosArrowBack } from "react-icons/io";
+import { Link } from "react-router-dom";
 interface LoginProps {
   onLogin: (username: string, password: string) => void;
 }
@@ -16,7 +17,8 @@ const LoginBox: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <>
-      <div className="mt-8 ml-8">back</div>
+      <IoIosArrowBack size="26px" className="mt-8 mb-0 mx-4" />
+
       <div className="flex flex-col mx-8 justify-center items-center h-[800px]">
         <h2 className="text-2xl text-center font-semibold mb-4">Boopinion</h2>
         <div className="border w-full mx-8 border-blue-700 p-8 rounded-lg shadow-lg">
