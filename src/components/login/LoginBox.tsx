@@ -17,9 +17,7 @@ const LoginBox: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <>
-      {/* <Link to="/">
-        <IoIosArrowBack size="26px" className="mt-8 mb-0 mx-4" />
-      </Link> */}
+      <IoIosArrowBack size="26px" className="mt-8 mb-0 mx-4" />
 
       <div className="flex flex-col mx-8 justify-center items-center h-[800px]">
         <h2 className="text-2xl text-center font-semibold mb-4">Boopinion</h2>
