@@ -87,24 +87,26 @@ const App = () => {
 
   return (
     <div className="p-4">
-      <Header />
-      <div className="mt-8 flex justify-between items-center pl-2 pr-2">
-        <input
-          type="text"
-          placeholder="무엇이 고민인가요?"
-          className="border border-gray-300 px-16 py-1 rounded-md mr-4"
-        />
+       <Header />
+    <div className="mt-8 flex justify-between items-center pl-2 pr-2">
+      <input
+        type="text"
+        placeholder="무엇이 고민인가요?"
+        className="border border-gray-300 px-4 py-1 rounded-md flex-grow"
+      />
+      <div className="flex space-x-2 pl-2">
         <Link to="/vote-maker">
-        <button className="bg-gray-700 text-white px-4 py-2 rounded-md">
-          <FaVoteYea />
-        </button>
-      </Link>
+          <button className="createVote bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
+            <FaVoteYea />
+          </button>
+        </Link>
         <button
           onClick={shuffleVotes}
-          className="bg-gray-700 text-white px-4 py-2 rounded-md"
+          className="shuffleVote bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
         >
           <FaRandom />
         </button>
+      </div>
       </div>
       <div className="overflow-auto max-h-[calc(100vh-160px)]">
         <motion.ul

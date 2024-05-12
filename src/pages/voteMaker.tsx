@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 
-//TODO: 입력필드 위로 늘어나게 css수정 
-
 type voteItem = {
   id: number;
   text: string;
@@ -14,10 +12,9 @@ const App: React.FC = () => {
     { id: Date.now(), text: '' },
     { id: Date.now() + 1, text: '' },
   ]);
-  const [selectedTopic, setSelectedTopic] = useState<string>('');
-  const topics = ['20대', '30대', '연애', 'MBTI'];
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const topics = ['일상', '연애', '고민', 'MBTI'];
 
- //⚡투표항목 추가 함수
   const handleAddvote = () => {
     if (voteItems.length < 5) {
       const newItem: voteItem = {
@@ -28,26 +25,26 @@ const App: React.FC = () => {
     }
   };
 
-  //⚡투표 텍스트 변경 함수
   const handlevoteChange = (id: number, text: string) => {
     setvoteItems(
       voteItems.map(item => (item.id === id ? { ...item, text } : item))
     );
   };
 
-  //⚡투표 항목 제거 함수
   const handleRemovevote = (id: number) => {
     if (voteItems.length > 2) {
       setvoteItems(voteItems.filter(item => item.id !== id));
     }
   };
-  
-  //⚡ 주제 선택할때 
-  const handleTopicChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTopic(event.target.value);
+
+  const handleToggleTopic = (topic: string) => {
+    if (selectedTopics.includes(topic)) {
+      setSelectedTopics(selectedTopics.filter(t => t !== topic));
+    } else {
+      setSelectedTopics([...selectedTopics, topic]);
+    }
   };
 
-  //⚡종료예정일 계산 = 현재날짜 + 3
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 3);
   const formattedEndDate = endDate.toLocaleDateString('ko-KR', {
@@ -60,23 +57,20 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center p-4 pl-8 pr-8 bg-white rounded-lg h-screen">
       <div className="p-2 mb-4 flex justify-between items-center w-full">
-      <Link to="/voteHome" className="text-black">
+        <Link to="/voteHome" className="text-black">
           <IoIosArrowBack size="26px" />
         </Link>
       </div>
-      <div className="mt-4 w-full">
-        <select
-          value={selectedTopic}
-          onChange={handleTopicChange}
-          className="w-full  border-b-2 p-2 mb-4"
-        >
-          <option value="">주제를 선택해주세요</option>
-          {topics.map(topic => (
-            <option key={topic} value={topic}>
-              {topic}
-            </option>
-          ))}
-        </select>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {topics.map(topic => (
+          <button
+            key={topic}
+            onClick={() => handleToggleTopic(topic)}
+            className={`px-3 py-1 rounded-full ${selectedTopics.includes(topic) ? 'bg-gray-400' : 'bg-gray-200'}`}
+          >
+            #{topic}
+          </button>
+        ))}
       </div>
       <input
         type="text"
@@ -87,7 +81,6 @@ const App: React.FC = () => {
         placeholder="투표 내용을 입력해 주세요"
         className=" w-full rounded-lg  p-2 mb-4 h-44 resize-y"
       />
-  
       <div className="flex  w-full overflow-y-hidden">
         <div className="w-full max-w-md bg-white shadow-md">
           <div className="votebox p-4 mt-4 ">
@@ -132,7 +125,6 @@ const App: React.FC = () => {
       </button>
     </div>
   );
-  
 };
 
 export default App;
