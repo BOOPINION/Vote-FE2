@@ -3,20 +3,18 @@ import { motion } from "framer-motion";
 import Header from "../components/home/Header";
 import { Link } from "react-router-dom";
 import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
-import { FaRandom } from "react-icons/fa";
 import { FaVoteYea } from 'react-icons/fa';
-
-//TODO: motion 추가,인기투표,  api준비 코드로 바꾸기 , api명세서
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 interface VoteItem {
   id: number;
   title: string;
   description: string;
   totalVotes: number;
-  // userParticipated: boolean; // 사용자가 투표에 참여했는지 여부
-  options: string[]; // 투표 선택지
-  participants: number; // 투표에 참여한 인원 수
-  likes: number; // 좋아요 수
+  options: string[];
+  participants: number;
+  likes: number;
 }
 
 const votes: VoteItem[] = [
@@ -76,23 +74,18 @@ const sortByLikesDescending = (a: VoteItem, b: VoteItem) => {
 const App = () => {
   const [randomVotes, setRandomVotes] = useState([...votes]);
 
-  // 좋아요 수에 따라 투표 정렬
-  const sortedVotes = randomVotes.sort(sortByLikesDescending);
-
-  // 투표 항목을 랜덤하게 재정렬하는 함수// 셔플 버튼
-  const shuffleVotes = () => {
-    const shuffled = [...votes].sort(() => Math.random() - 0.5);
-    setRandomVotes(shuffled);
-  };
-
   return (
     <div className="p-4">
        <Header />
     <div className="mt-8 flex justify-between items-center pl-2 pr-2">
-      <input
-        type="text"
-        placeholder="무엇이 고민인가요?"
-        className="border border-gray-300 px-4 py-1 rounded-md flex-grow"
+      <Autocomplete
+        multiple
+        id="multiple-limit-tags"
+        options={["연애", "일상", "취미", "학업", "취업"]}
+        renderInput={(params) => (
+          <TextField {...params} label="무엇이 고민인가요?" placeholder="해시태그 작성" />
+        )}
+        sx={{ width: '500px' }}
       />
       <div className="flex space-x-2 pl-2">
         <Link to="/vote-maker">
@@ -100,12 +93,6 @@ const App = () => {
             <FaVoteYea />
           </button>
         </Link>
-        <button
-          onClick={shuffleVotes}
-          className="shuffleVote bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
-        >
-          <FaRandom />
-        </button>
       </div>
       </div>
       <div className="overflow-auto max-h-[calc(100vh-160px)]">
@@ -115,17 +102,17 @@ const App = () => {
           transition={{ delay: 0.2 }}
           className="pt-4"
         >
-          {sortedVotes.map(
-            (
-              { id, title, options, participants, likes },
-              index
-            ) => (
+          {randomVotes
+            .sort(sortByLikesDescending)
+            .map(({ id, title, options, participants, likes }, index) => (
               <Link to={`/vote-result`} key={id}>
                 <motion.li
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`p-4 m-2 shadow rounded-lg mb-4  ${index === 0 ? "border-2 border-blue-500" : ""}`}
+                  className={`p-4 m-2 shadow rounded-lg mb-4  ${
+                    index === 0 ? "border-2 border-blue-500" : ""
+                  }`}
                 >
                   <h3 className="text-lg font-bold">{title}</h3>
                   <div className="mt-2">
@@ -154,8 +141,7 @@ const App = () => {
                   </div>
                 </motion.li>
               </Link>
-            )
-          )}
+            ))}
         </motion.ul>
       </div>
     </div>
