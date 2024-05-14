@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp";
 import VoteMaker from "./pages/voteMaker";
 import VoteHome from "./pages/voteHome";
 import Login from "./pages/Login";
+import Setting from "./pages/setting";
+import Mypage from "./pages/myPage";
 function App() {
   return (
     <Router>
@@ -16,6 +18,8 @@ function App() {
         <Route path="/vote-maker" element={<VoteMaker />} />
         <Route path="/voteHome" element={<VoteHome />} />
         <Route path="login" element={<Login />} />
+        <Route path="/mypage" element={<Mypage/>} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
     </Router>
   );
