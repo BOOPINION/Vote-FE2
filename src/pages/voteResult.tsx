@@ -2,12 +2,9 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
+import LikeButton from '../components/voteResult/likeBtn'; 
+import { RiShareForwardLine } from 'react-icons/ri';
 
-import VoteBox from '../components/voteResult/votebox';
-import LikeButton from '../components/voteResult/likeBtn';
-import CommentSection from '../components/voteResult/comment';
-
-//TODO: 삭제기능 필터링, api호출 
 interface VoteOption {
   count: number;
   label: string;
@@ -79,7 +76,7 @@ function VoteResult() {
     0
   );
 
-  //투표 제출 
+  // 투표 제출 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -99,7 +96,7 @@ function VoteResult() {
     }, 1000);
   };
 
-  //투표 댓글
+  // 투표 댓글
   const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newComment: Comment = {
@@ -112,7 +109,7 @@ function VoteResult() {
     setCommentInput('');
   };
 
-  //좋아요
+  // 좋아요
   function toggleLike() {
     if (liked) {
       setLikeCount((prevCount) => prevCount - 1);
@@ -133,17 +130,15 @@ function VoteResult() {
           <IoIosArrowBack size="26px" />
         </Link>
       </div>
-      <div className="flex items-center mb-4">
-        <div className="w-10 h-10 rounded-full bg-gray-200 mr-4"></div>
-        <div className="text-sm">
-          <p className="text-gray-900 leading-none">{pollData.username}</p>
-          <p className="text-gray-600">{pollData.viewCount}명 조회</p>
-        </div>
-      </div>
-      <div className="voteText text-lg mb-4">{pollData.pollTitle}</div>
 
       {voteSubmitted ? (
-        <div className="bg-white border border-gray-200 rounded-xl p-6 mb-4">
+        <div className="bg-white rounded-xl p-6 mb-4">
+          <div className="mb-4 mt-8 text-xl font-semibold text-center text-gray-800">
+            {pollData.pollTitle}
+          </div>
+          <div className="mb-16 text-md font-semibold text-center text-gray-800">
+            {pollData.pollDescription}
+          </div>
           {Object.entries(votes).map(([key, { count, label }]) => (
             <div key={key} className="mb-4">
               <div className="flex items-center justify-between">
@@ -169,24 +164,105 @@ function VoteResult() {
           </button>
         </div>
       ) : (
-        <VoteBox
-          votes={votes}
-          selectedOption={selectedOption}
-          setSelectedOption={setSelectedOption}
-          handleSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
+        <div className="votebox bg-white rounded-xl px-8 pt-6 pb-8 mb-4 ">
+          <div className="mb-4 mt-8 text-xl font-semibold text-center text-gray-800">
+            {pollData.pollTitle}
+          </div>
+          <div className="mb-16 text-md font-semibold text-center text-gray-800">
+            {pollData.pollDescription}
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            {Object.entries(votes).map(([key, { label }]) => (
+              <div
+                key={key}
+                className={`mb-8 p-4 rounded-xl border-2 ${
+                  selectedOption === key
+                    ? "bg-blue-100 border-blue-500"
+                    : "border-gray-300"
+                }`}
+              >
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    className="form-radio text-blue-500 h-5 w-5"
+                    name="vote"
+                    value={key}
+                    checked={selectedOption === key}
+                    onChange={(e) => setSelectedOption(e.target.value)}
+                  />
+                  <span className="ml-2 text-gray-700">{label}</span>
+                </label>
+              </div>
+            ))}
+            <button
+              className={`w-full py-2 rounded-full font-bold flex justify-center items-center focus:outline-none focus:shadow-outline transition-colors ${
+                isLoading
+                  ? "bg-gray-300 cursor-not-allowed text-gray-700"
+                  : "bg-blue-500 hover:bg-blue-600 text-white"
+              }`}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 0116 0H4z"
+                    ></path>
+                  </svg>
+                  투표 처리 중
+                </>
+              ) : (
+                "투표하기"
+              )}
+            </button>
+          </form>
+        </div>
       )}
 
-      <LikeButton liked={liked} toggleLike={toggleLike} likeCount={likeCount} />
+      <div className="flex justify-center items-center mb-4">
+        <div className="flex items-center">
+          <LikeButton
+            liked={liked}
+            toggleLike={toggleLike}
+            likeCount={likeCount}
+          />
+        </div>
 
-      <CommentSection
+        <button
+          className="flex items-center mb-4 text-gray-400 py-2 px-3 rounded-full transition-colors"
+          onClick={() => {
+            // 웹공유 로직 추가 
+            console.log("Share web content");
+          }}
+        >
+          <RiShareForwardLine className="w-6 h-6 mr-2" />
+        </button>
+      </div>
+
+      {/* <CommentSection
         comments={comments}
         commentInput={commentInput}
         setCommentInput={setCommentInput}
         handleCommentSubmit={handleCommentSubmit}
         handleCommentDelete={handleCommentDelete} 
-      />
+      /> */}
     </div>
   );
 }
