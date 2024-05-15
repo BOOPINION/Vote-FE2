@@ -1,6 +1,6 @@
 {
-  "pollTitle": " mockdata 적용 : 어떤 직장이 좋을까?",
-  "pollDescription": "선택해 주세요.",
+  "pollTitle": " 어떤 직장이 좋을까?",
+  "pollDescription": " 선택해 주세요.",
   "username": "Boo123",
   "viewCount": 5,
   "likeCount": 10, 
@@ -17,13 +17,13 @@
   "comments": [
     {
       "id": 1,
-      "username": "컴공 30학번",
+      "username": "123",
       "content": "내가쓴 댓글 삭제 만들어야함 ",
       "createdAt": "2024-04-24T10:30:00Z"
     },
     {
       "id": 2,
-      "username": "버니즈",
+      "username": "456",
       "content": "댓글 달린다오오오 ",
       "createdAt": "2024-04-25T09:45:00Z"
     }

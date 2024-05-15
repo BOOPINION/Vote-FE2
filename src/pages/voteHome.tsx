@@ -66,10 +66,10 @@ const votes: VoteItem[] = [
   // 추가적인 투표 아이템들...
 ];
 
-// 투표를 좋아요 수에 따라 내림차순으로 정렬하는 함수
-const sortByLikesDescending = (a: VoteItem, b: VoteItem) => {
-  return b.likes - a.likes;
-};
+// // 투표를 좋아요 수에 따라 내림차순으로 정렬하는 함수
+// const sortByLikesDescending = (a: VoteItem, b: VoteItem) => {
+//   return b.likes - a.likes;
+// };
 
 const App = () => {
   const [randomVotes, setRandomVotes] = useState([...votes]);
@@ -103,16 +103,14 @@ const App = () => {
           className="pt-4"
         >
           {randomVotes
-            .sort(sortByLikesDescending)
+            // .sort(sortByLikesDescending)
             .map(({ id, title, options, participants, likes }, index) => (
               <Link to={`/vote-result`} key={id}>
                 <motion.li
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`p-4 m-2 shadow rounded-lg mb-4  ${
-                    index === 0 ? "border-2 border-blue-500" : ""
-                  }`}
+                  className={`p-4 m-2 shadow rounded-lg mb-4`}
                 >
                   <h3 className="text-lg font-bold">{title}</h3>
                   <div className="mt-2">
@@ -128,16 +126,16 @@ const App = () => {
                       </motion.div>
                     ))}
                   </div>
-                  <div className="flex justify-between mt-4">
-                    <div className="text-sm text-gray-600 flex items-center">
+                  <div className="flex justify-center mt-4">
+                    {/* <div className="text-sm text-gray-600 flex items-center">
                       <AiOutlineHeart className="mr-1" /> {likes}
-                    </div>
+                    </div> */}
                     <button className="text-sm bg-gray-800 text-white border px-16 py-2 rounded-xl">
                       투표 참여하기
                     </button>
-                    <div className="text-sm text-gray-600 flex items-center">
+                    {/* <div className="text-sm text-gray-600 flex items-center">
                       <AiOutlineUser className="mr-1" /> {participants}
-                    </div>
+                    </div> */}
                   </div>
                 </motion.li>
               </Link>
