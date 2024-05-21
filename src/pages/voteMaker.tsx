@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { Link } from 'react-router-dom';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 type voteItem = {
   id: number;
@@ -13,7 +15,7 @@ const App: React.FC = () => {
     { id: Date.now() + 1, text: '' },
   ]);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
-  const topics = ['일상', '연애', '고민', 'MBTI'];
+  const topics = ['일상', '연애', '취미', '학업', '취업'];
 
   const handleAddvote = () => {
     if (voteItems.length < 5) {
@@ -61,31 +63,41 @@ const App: React.FC = () => {
           <IoIosArrowBack size="26px" />
         </Link>
       </div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {topics.map(topic => (
-          <button
-            key={topic}
-            onClick={() => handleToggleTopic(topic)}
-            className={`px-3 py-1 rounded-full ${selectedTopics.includes(topic) ? 'bg-gray-400' : 'bg-gray-200'}`}
-          >
-            #{topic}
-          </button>
-        ))}
-      </div>
+      <Autocomplete
+        multiple
+        id="multiple-limit-tags"
+        options={topics}
+        value={selectedTopics}
+        onChange={(event, newValue) => {
+          setSelectedTopics(newValue);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="무엇이 고민인가요?"
+            placeholder=""
+          />
+        )}
+        sx={{ width: '100%', mb: 2, mt: 2 }}
+      />
+
       <input
         type="text"
         placeholder="제목 내용을 입력해 주세요"
-        className="mt-2 w-full rounded-lg text-lg  p-2 mb-2"
+        className="w-full text-lg p-2 mb-2 border-b"
       />
       <textarea
         placeholder="투표 내용을 입력해 주세요"
-        className=" w-full rounded-lg  p-2 mb-4 h-44 resize-y"
+        className="w-full rounded-lg p-2 mb-4 h-44 resize-y"
       />
-      <div className="flex  w-full overflow-y-hidden">
-        <div className="w-full max-w-md bg-white shadow-md">
-          <div className="votebox p-4 mt-4 ">
+
+      <div className="flex w-full">
+        <div className="w-full bg-white shadow-md">
+          <div className="votebox p-4">
             <h2 className="text-lg font-semibold text-center">투표</h2>
-            <h4 className='text-sm font-thin text-gray-500 text-center'>항목은 2개이상 5이하로만 가능합니다</h4>
+            <h4 className="text-sm font-thin text-gray-500 text-center">
+              항목은 2개 이상 5개 이하로만 가능합니다
+            </h4>
             {voteItems.map((item, index) => (
               <div
                 key={item.id}

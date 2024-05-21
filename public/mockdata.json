@@ -2,6 +2,7 @@
   "pollTitle": " 어떤 직장이 좋을까?",
   "pollDescription": " 선택해 주세요.",
   "username": "Boo123",
+  "hashtags":["취업", "고민"],
   "viewCount": 5,
   "likeCount": 10, 
   "options": {
@@ -14,6 +15,8 @@
       "label": "일은 싫은데 좋은 상사"
     }
   },
+
+
   "comments": [
     {
       "id": 1,
