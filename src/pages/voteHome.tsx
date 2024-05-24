@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "../components/home/Header";
 import { Link } from "react-router-dom";
-import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
 import { FaVoteYea } from 'react-icons/fa';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { useInView } from 'react-intersection-observer';
 
 interface VoteItem {
   id: number;
@@ -17,7 +17,7 @@ interface VoteItem {
   likes: number;
 }
 
-const votes: VoteItem[] = [
+const initialVotes: VoteItem[] = [
   {
     id: 1,
     title: "수명을 선택",
@@ -66,34 +66,70 @@ const votes: VoteItem[] = [
   // 추가적인 투표 아이템들...
 ];
 
-// // 투표를 좋아요 수에 따라 내림차순으로 정렬하는 함수
-// const sortByLikesDescending = (a: VoteItem, b: VoteItem) => {
-//   return b.likes - a.likes;
-// };
+const fetchMoreVotes = (): VoteItem[] => [
+  {
+    id: 6,
+    title: "새로운 투표 제목",
+    description: "새로운 투표 설명",
+    totalVotes: 100,
+    options: ["옵션 1", "옵션 2"],
+    participants: 20,
+    likes: 10,
+  },
+  {
+    id: 7,
+    title: "또 다른 투표 제목",
+    description: "또 다른 투표 설명",
+    totalVotes: 100,
+    options: ["옵션 A", "옵션 B"],
+    participants: 30,
+    likes: 20,
+  },
+];
 
 const App = () => {
-  const [randomVotes, setRandomVotes] = useState([...votes]);
+  const [votes, setVotes] = useState<VoteItem[]>(initialVotes);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchMore = () => {
+    const moreVotes = fetchMoreVotes();
+    if (moreVotes.length === 0) {
+      setHasMore(false);
+    } else {
+      setVotes(prevVotes => [...prevVotes, ...moreVotes]);
+    }
+  };
+
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  });
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      fetchMore();
+    }
+  }, [inView, hasMore]);
 
   return (
     <div className="p-4">
-       <Header />
-    <div className="mt-8 flex justify-between items-center pl-2 pr-2">
-      <Autocomplete
-        multiple
-        id="multiple-limit-tags"
-        options={["연애", "일상", "취미", "학업", "취업"]}
-        renderInput={(params) => (
-          <TextField {...params} label="무엇이 고민인가요?" placeholder="해시태그 작성" />
-        )}
-        sx={{ width: '500px' }}
-      />
-      <div className="flex space-x-2 pl-2">
-        <Link to="/vote-maker">
-          <button className="createVote bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
-            <FaVoteYea />
-          </button>
-        </Link>
-      </div>
+      <Header />
+      <div className="mt-8 flex justify-between items-center pl-2 pr-2">
+        <Autocomplete
+          multiple
+          id="multiple-limit-tags"
+          options={["연애", "일상", "취미", "학업", "취업"]}
+          renderInput={(params) => (
+            <TextField {...params} label="무엇이 고민인가요?" placeholder="해시태그 작성" />
+          )}
+          sx={{ width: '500px' }}
+        />
+        <div className="flex space-x-2 pl-2">
+          <Link to="/vote-maker">
+            <button className="createVote bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
+              <FaVoteYea />
+            </button>
+          </Link>
+        </div>
       </div>
       <div className="overflow-auto max-h-[calc(100vh-160px)]">
         <motion.ul
@@ -102,44 +138,72 @@ const App = () => {
           transition={{ delay: 0.2 }}
           className="pt-4"
         >
-          {randomVotes
-            // .sort(sortByLikesDescending)
-            .map(({ id, title, options, participants, likes }, index) => (
-              <Link to={`/vote-result`} key={id}>
-                <motion.li
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className={`p-4 m-2 shadow rounded-lg mb-4`}
-                >
-                  <h3 className="text-lg font-bold">{title}</h3>
-                  <div className="mt-2">
-                    {options.map((option, optionIndex) => (
-                      <motion.div
-                        key={optionIndex}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 * optionIndex }}
-                        className="flex items-center justify-between p-2 bg-gray-100 rounded-lg my-1"
-                      >
-                        <span>{option}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div className="flex justify-center mt-4">
-                    {/* <div className="text-sm text-gray-600 flex items-center">
-                      <AiOutlineHeart className="mr-1" /> {likes}
-                    </div> */}
-                    <button className="text-sm bg-gray-800 text-white border px-16 py-2 rounded-xl">
-                      투표하고 결과보기
-                    </button>
-                    {/* <div className="text-sm text-gray-600 flex items-center">
-                      <AiOutlineUser className="mr-1" /> {participants}
-                    </div> */}
-                  </div>
-                </motion.li>
-              </Link>
-            ))}
+          {votes.map((vote, index) => {
+            if (votes.length === index + 1) {
+              return (
+                <Link to={`/vote-result`} key={vote.id}>
+                  <motion.li
+                    ref={ref}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="p-4 m-2 shadow rounded-lg mb-4"
+                  >
+                    <h3 className="text-lg font-bold">{vote.title}</h3>
+                    <div className="mt-2">
+                      {vote.options.map((option, optionIndex) => (
+                        <motion.div
+                          key={optionIndex}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 * optionIndex }}
+                          className="flex items-center justify-between p-2 bg-gray-100 rounded-lg my-1"
+                        >
+                          <span>{option}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <button className="text-sm bg-gray-800 text-white border px-16 py-2 rounded-xl">
+                        투표하고 결과보기
+                      </button>
+                    </div>
+                  </motion.li>
+                </Link>
+              );
+            } else {
+              return (
+                <Link to={`/vote-result`} key={vote.id}>
+                  <motion.li
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="p-4 m-2 shadow rounded-lg mb-4"
+                  >
+                    <h3 className="text-lg font-bold">{vote.title}</h3>
+                    <div className="mt-2">
+                      {vote.options.map((option, optionIndex) => (
+                        <motion.div
+                          key={optionIndex}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 * optionIndex }}
+                          className="flex items-center justify-between p-2 bg-gray-100 rounded-lg my-1"
+                        >
+                          <span>{option}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <button className="text-sm bg-gray-800 text-white border px-16 py-2 rounded-xl">
+                        투표하고 결과보기
+                      </button>
+                    </div>
+                  </motion.li>
+                </Link>
+              );
+            }
+          })}
         </motion.ul>
       </div>
     </div>
