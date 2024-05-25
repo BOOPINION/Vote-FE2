@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 import LikeButton from '../components/voteResult/likeBtn'; 
 import { RiShareForwardLine } from 'react-icons/ri';
-import voteImg from '../voteImg.png';
+import CommentSection from '../components/voteResult/comment';
 
 interface VoteOption {
   count: number;
@@ -101,17 +101,17 @@ function VoteResult() {
   };
 
   // 투표 댓글
-  // const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const newComment: Comment = {
-  //     id: comments.length + 1,
-  //     username: pollData.username,
-  //     content: commentInput,
-  //     createdAt: new Date(),
-  //   };
-  //   setComments([...comments, newComment]);
-  //   setCommentInput('');
-  // };
+  const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const newComment: Comment = {
+      id: comments.length + 1,
+      username: pollData.username,
+      content: commentInput,
+      createdAt: new Date(),
+    };
+    setComments([...comments, newComment]);
+    setCommentInput('');
+  };
 
   // 좋아요
   function toggleLike() {
@@ -136,12 +136,12 @@ function VoteResult() {
       </div>
 
       {voteSubmitted ? (
-        <div className="bg-white rounded-xl p-6 mb-4">
-          <div className="mb-4 mt-8 text-xl font-semibold text-center text-gray-800">
-            {pollData.pollTitle}
-          </div>
-          <div className="mb-16 text-md font-semibold text-center text-gray-800">
-            {pollData.pollDescription}
+        <div className="votebox bg-white rounded-xl px-8 pt-6 pb-16 mb-2 ">
+        <div className="mb-4 mt-2 text-xl font-semibold text-center text-gray-800">
+          {pollData.pollTitle}
+        </div>
+        <div className="mb-20 text-md font-semibold text-center text-gray-800">
+          {pollData.pollDescription}
           </div>
           {Object.entries(votes).map(([key, { count, label }]) => (
             <div key={key} className="mb-4">
@@ -168,15 +168,15 @@ function VoteResult() {
           </button>
         </div>
       ) : (
-        <div className="votebox bg-white rounded-xl px-8 pt-6 pb-8 mb-4 ">
-          <div className="mb-4 mt-8 text-xl font-semibold text-center text-gray-800">
+        <div className="votebox bg-white rounded-xl px-8 pt-6 pb-4 mb-2 ">
+          <div className="mb-4 mt-2 text-xl font-semibold text-center text-gray-800">
             {pollData.pollTitle}
           </div>
           <div className="mb-6 text-md font-semibold text-center text-gray-800">
             {pollData.pollDescription}
           </div>
           
-          <div className="categories mb-14 flex justify-center items-center">
+          <div className="categories mb-8 flex justify-center items-center">
             {pollData.hashtags.map((hashtag, index) => (
               <span
                 key={index}
@@ -191,7 +191,7 @@ function VoteResult() {
             {Object.entries(votes).map(([key, { label }]) => (
               <div
                 key={key}
-                className={`mb-8 p-4 rounded-full border-2 ${
+                className={`mb-4 p-4 rounded-full border-2 ${
                   selectedOption === key
                     ? "bg-blue-100 border-blue-700"
                     : "border-gray-300"
@@ -252,23 +252,15 @@ function VoteResult() {
       )}
 
       <div className="flex justify-center items-center mb-4">
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <LikeButton
             liked={liked}
             toggleLike={toggleLike}
             likeCount={likeCount}
           />
-        </div>
+        </div> */}
 
-        <button
-          className="flex items-center mb-4 text-gray-400 py-2 px-3 rounded-full transition-colors"
-          onClick={() => {
-            // 웹공유 로직 추가
-            console.log("Share web content");
-          }}
-        >
-          <RiShareForwardLine className="w-6 h-6 mr-2" />
-        </button>
+      
       </div>
 
       {/* <CommentSection
