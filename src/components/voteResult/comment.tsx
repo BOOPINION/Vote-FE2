@@ -13,7 +13,7 @@ interface CommentSectionProps {
   commentInput: string;
   setCommentInput: (input: string) => void;
   handleCommentSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  handleCommentDelete: (id: number) => void; // 새로운 프롭 추가
+  handleCommentDelete: (id: number) => void; 
 }
 
 function CommentSection({ comments, commentInput, setCommentInput, handleCommentSubmit, handleCommentDelete }: CommentSectionProps) {
@@ -21,10 +21,10 @@ function CommentSection({ comments, commentInput, setCommentInput, handleComment
     <div className="comment-section">
       <form
         onSubmit={handleCommentSubmit}
-        className="bottom-0 items-center max-w-md mx-auto px-4 pt-2 pb-2 bg-white border rounded-lg flex"
+        className="bottom-0 items-center max-w-md mx-auto px-4 pt-2 pb-2 bg-white  rounded-lg flex"
       >
         <textarea
-          className="w-full p-1 border border-gray-300 rounded-lg mr-2 h-10"
+          className="w-full p-1 border-b border-b-gray-300  mr-2 h-10"
           placeholder="댓글을 입력하세요..."
           value={commentInput}
           onChange={(e) => setCommentInput(e.target.value)}

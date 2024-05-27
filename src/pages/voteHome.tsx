@@ -125,7 +125,7 @@ const App = () => {
         />
         <div className="flex space-x-2 pl-2">
           <Link to="/vote-maker">
-            <button className="createVote bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
+            <button className="createVote bg-gray-200 text-gray-700 px-4 py-4 rounded-full hover:bg-gray-300">
               <FaVoteYea />
             </button>
           </Link>

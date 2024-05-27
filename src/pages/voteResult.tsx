@@ -117,6 +117,9 @@ function VoteResult() {
     setComments([...comments, newComment]);
     setCommentInput('');
   };
+  function handleCommentDelete(id: number): void {
+    setComments(comments.filter(comment => comment.id !== id)); 
+  }
 
   // 좋아요
   function toggleLike() {
@@ -128,9 +131,7 @@ function VoteResult() {
     setLiked((prevLiked) => !prevLiked);
   }
 
-  function handleCommentDelete(id: number): void {
-    setComments(comments.filter(comment => comment.id !== id)); 
-  }
+  
 
   return (
     <div className="max-w-md mx-auto p-4 overflow-y-auto h-screen">
