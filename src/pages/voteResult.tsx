@@ -103,6 +103,11 @@ function VoteResult() {
   // 투표 댓글
   const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!commentInput.trim()) {
+      return;
+    }
+    
     const newComment: Comment = {
       id: comments.length + 1,
       username: pollData.username,
@@ -252,24 +257,24 @@ function VoteResult() {
       )}
 
       <div className="flex justify-center items-center mb-4">
-        {/* <div className="flex items-center">
+        <div className="flex items-center">
           <LikeButton
             liked={liked}
             toggleLike={toggleLike}
             likeCount={likeCount}
           />
-        </div> */}
+        </div>
 
       
       </div>
 
-      {/* <CommentSection
+      <CommentSection
         comments={comments}
         commentInput={commentInput}
         setCommentInput={setCommentInput}
         handleCommentSubmit={handleCommentSubmit}
         handleCommentDelete={handleCommentDelete} 
-      /> */}
+      />
     </div>
   );
 }

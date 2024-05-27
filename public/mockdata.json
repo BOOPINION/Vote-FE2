@@ -21,13 +21,13 @@
     {
       "id": 1,
       "username": "123",
-      "content": "내가쓴 댓글 삭제 만들어야함 ",
+      "content": "댓123",
       "createdAt": "2024-04-24T10:30:00Z"
     },
     {
       "id": 2,
       "username": "456",
-      "content": "댓글 달린다오오오 ",
+      "content": "댓글  ",
       "createdAt": "2024-04-25T09:45:00Z"
     }
   ]
