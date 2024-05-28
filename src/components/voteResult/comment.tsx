@@ -39,7 +39,7 @@ function CommentSection({ comments, commentInput, setCommentInput, handleComment
           <div key={comment.id} className="p-4 pb-1 border-b  flex justify-between items-center">
             <div>
               <p className="text-gray-600">
-                {comment.username} - {new Date(comment.createdAt).toLocaleString()}
+              {comment.username} - {new Date(comment.createdAt).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })} {new Date(comment.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}
               </p>
               <p>{comment.content}</p>
             </div>

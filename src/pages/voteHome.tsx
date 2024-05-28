@@ -6,6 +6,7 @@ import { FaVoteYea } from 'react-icons/fa';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useInView } from 'react-intersection-observer';
+import TopicSelector from "../components/voteMaker/topicSelector";
 
 interface VoteItem {
   id: number;
