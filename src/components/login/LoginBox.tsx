@@ -1,24 +1,21 @@
 import React, { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+
 interface LoginProps {
-  onLogin: (username: string, password: string) => void;
+  onLogin: (email: string, password: string) => void;
 }
 
 const LoginBox: React.FC<LoginProps> = ({ onLogin }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    onLogin(username, password);
-    setUsername("");
+    onLogin(email, password);
+    setEmail("");
     setPassword("");
   };
 
   return (
     <>
-      <IoIosArrowBack size="26px" className="mt-8 mb-0 mx-4" />
-
       <div className="flex flex-col mx-8 justify-center items-center h-[800px]">
         <h2 className="text-2xl text-center font-semibold mb-4">Boopinion</h2>
         <div className="border w-full mx-8 border-blue-700 p-8 rounded-lg shadow-lg">
@@ -28,9 +25,9 @@ const LoginBox: React.FC<LoginProps> = ({ onLogin }) => {
               <input
                 type="text"
                 className="w-full border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
-                value={username}
-                placeholder="아이디"
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                placeholder="이메일"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="mb-4">
