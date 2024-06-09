@@ -16,5 +16,4 @@ const Login: React.FC = () => {
   );
 };
 
-ReactDOM.render(<Login />, document.getElementById("root"));
 export default Login;
