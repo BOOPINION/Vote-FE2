@@ -1,18 +1,48 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import LoginBox from "../components/login/LoginBox";
+import { IoIosArrowBack } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
-  const handleLogin = (username: string, password: string) => {
-    // 여기서는 로그인 과정을 처리할 수 있습니다.
-    console.log("Username:", username);
-    console.log("Password:", password);
+  const navigate = useNavigate();
+
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const response = await axios.post("auth/login", { email, password });
+      console.log(response.data);
+      const {
+        username,
+        email: userEmail,
+        loginToken,
+        refreshToken,
+      } = response.data;
+
+      localStorage.setItem("loginToken", loginToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      console.log(username, userEmail);
+
+      navigate("/"); // 홈으로
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(`로그인 실패: ${error.response?.data?.message || error.message}`);
+      } else {
+        alert(`로그인 실패: ${error}`);
+      }
+    }
   };
 
   return (
-    <div>
-      <LoginBox onLogin={handleLogin} />
-    </div>
+    <>
+      <Link to="/">
+        <IoIosArrowBack size="26px" className="mt-8 mb-0 mx-4" />
+      </Link>
+      <div>
+        <LoginBox onLogin={handleLogin} />
+      </div>
+    </>
   );
 };
 
