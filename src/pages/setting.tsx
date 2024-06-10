@@ -9,14 +9,9 @@ const Setting: React.FC = () => {
     console.log(nickName);
   }
 
-  const handleSetImage = (image: string) => {
-    console.log("바뀜");
-  }
-
   return (
     <div>
         <Header />
-        <SetImage onSetImage={handleSetImage}/>
         <SetName onSetting={handleSetNickName} />
      
     </div>    

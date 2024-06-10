@@ -287,7 +287,7 @@ const App = () => {
           multiple
           id="multiple-limit-tags"
           options={["연애", "일상", "취미", "학업", "취업"]}
-          renderInput={(params) => (
+          renderInput={(params: any) => (
             <TextField {...params} label="무엇이 고민인가요?" placeholder="해시태그 작성" />
           )}
           sx={{ width: '500px' }}
