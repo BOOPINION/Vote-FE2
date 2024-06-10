@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import ProgressBar from "./ProgressBar";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Question: React.FC<{
   questionNumber: number;
   setQuestionNumber: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ questionNumber, setQuestionNumber }) => {
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -16,7 +17,8 @@ const Question: React.FC<{
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [isVerificationSent, setIsVerificationSent] = useState<boolean>(false);
   const [gender, setGender] = useState<string>("");
-  const [age, setAge] = useState<number | null>(0);
+  const [age, setAge] = useState<number | null>(10);
+  const [signUpCompleted, setSignUpCompleted] = useState<boolean>(false);
 
   const questions = [
     {
@@ -33,7 +35,7 @@ const Question: React.FC<{
     },
     {
       question: "당신의 성별이 궁금해요",
-      options: ["남성", "여성", "기타"],
+      options: ["남성", "여성"],
     },
     {
       question: "당신의 나이대는 어떻게 되세요?",
@@ -41,25 +43,29 @@ const Question: React.FC<{
     },
   ];
 
-  const handleOptionSelect = (option: string) => {
-    setSelectedOption(option);
-    if (questionNumber === 4) {
-      setGender(option);
-    } else if (questionNumber === 5) {
-      const ageMapping: { [key: string]: number } = {
-        "10대": 10,
-        "20대": 20,
-        "30대": 30,
-        "40대": 40,
-        "50대 이상": 50,
-      };
-      setAge(ageMapping[option]);
-    }
-    if (questionNumber < questions.length) {
-      setQuestionNumber((prevQuestionNumber) => prevQuestionNumber + 1);
-    } else {
-      handleSignUp();
-    }
+  const handleGenderSelect = (option: string) => {
+    const genderMapping: { [key: string]: string } = {
+      남성: "MALE",
+      여성: "FEMALE",
+    };
+    const selectedGender = genderMapping[option];
+    setGender(selectedGender);
+    console.log(`Set gender to: ${selectedGender}`);
+    setQuestionNumber((prevQuestionNumber) => prevQuestionNumber + 1);
+  };
+
+  const handleAgeSelect = (option: string) => {
+    const ageMapping: { [key: string]: number } = {
+      "10대": 10,
+      "20대": 20,
+      "30대": 30,
+      "40대": 40,
+      "50대 이상": 50,
+    };
+    const selectedAge = ageMapping[option];
+    setAge(selectedAge);
+    console.log(`Set age to: ${selectedAge}`);
+    handleSignUp();
   };
 
   const handleNextButtonClick = async () => {
@@ -141,7 +147,9 @@ const Question: React.FC<{
         gender,
         age,
       });
+      setSignUpCompleted(true);
       alert("회원가입이 완료되었습니다.");
+      navigate("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         alert(
@@ -266,17 +274,34 @@ const Question: React.FC<{
               다음
             </button>
           </>
-        ) : (
+        ) : questionNumber === 4 ? (
           questions[questionNumber - 1].options.map((option, index) => (
             <button
               key={index}
               className="mt-8 w-full items-center bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full mr-4"
-              onClick={() => handleOptionSelect(option)}
+              onClick={() => handleGenderSelect(option)}
             >
               {option}
             </button>
           ))
-        )}
+        ) : questionNumber === 5 ? (
+          questions[questionNumber - 1].options.map((option, index) => (
+            <button
+              key={index}
+              className="mt-8 w-full items-center bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full mr-4"
+              onClick={() => handleAgeSelect(option)}
+            >
+              {option}
+            </button>
+          ))
+        ) : signUpCompleted ? (
+          <button
+            className="mt-8 w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+            onClick={() => alert("회원가입이 이미 완료되었습니다.")}
+          >
+            회원가입 완료
+          </button>
+        ) : null}
       </div>
     </>
   );
