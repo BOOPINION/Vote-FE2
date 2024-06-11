@@ -11,18 +11,14 @@ const Login: React.FC = () => {
   const handleLogin = async (email: string, password: string) => {
     try {
       const response = await axios.post("auth/login", { email, password });
-      console.log(response.data);
-      const {
-        username,
-        email: userEmail,
-        loginToken,
-        refreshToken,
-      } = response.data;
+      console.log(response);
+      console.log(response.data.accessToken);
+      const loginToken = response.data.accessToken;
 
       localStorage.setItem("loginToken", loginToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      // localStorage.setItem("refreshToken", refreshToken);
 
-      console.log(username, userEmail);
+      // console.log(username, userEmail);
 
       navigate("/"); // 홈으로
     } catch (error) {
