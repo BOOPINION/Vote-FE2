@@ -74,6 +74,14 @@ const Question: React.FC<{
       alert("유효한 이메일을 입력해주세요.");
       return;
     }
+    if (questionNumber === 2 && name === "") {
+      alert("이름을 입력해주세요!");
+      return;
+    }
+    if (questionNumber === 3 && password === "") {
+      alert("비밀번호를 입력해주세요!");
+      return;
+    }
 
     if (questionNumber === 3 && password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
