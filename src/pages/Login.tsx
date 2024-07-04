@@ -14,8 +14,10 @@ const Login: React.FC = () => {
       console.log(response);
       console.log(response.data.loginToken);
       const loginToken = response.data.loginToken;
+      const userId = response.data.userId;
 
       localStorage.setItem("loginToken", loginToken);
+      localStorage.setItem("userId", userId);
       // localStorage.setItem("refreshToken", refreshToken);
 
       // console.log(username, userEmail);
