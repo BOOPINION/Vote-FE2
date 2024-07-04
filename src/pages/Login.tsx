@@ -12,8 +12,8 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post("auth/login", { email, password });
       console.log(response);
-      console.log(response.data.accessToken);
-      const loginToken = response.data.accessToken;
+      console.log(response.data.loginToken);
+      const loginToken = response.data.loginToken;
 
       localStorage.setItem("loginToken", loginToken);
       // localStorage.setItem("refreshToken", refreshToken);
