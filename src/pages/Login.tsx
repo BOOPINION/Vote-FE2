@@ -10,7 +10,15 @@ const Login: React.FC = () => {
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      const response = await axios.post("auth/login", { email, password });
+      const response = await axios.post(
+        "auth/login",
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response);
       console.log(response.data.loginToken);
       const loginToken = response.data.loginToken;
