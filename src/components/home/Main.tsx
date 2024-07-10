@@ -15,7 +15,7 @@ const Main: React.FC = () => {
         <img src="/Boo.jpeg" />
       </div>
       <Link to="/signup">
-        <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-black mb-24">
+        <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-black mb-32">
           회원가입하고 설문 작성하러 가기
         </button>
       </Link>
